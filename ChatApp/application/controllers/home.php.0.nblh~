@@ -1,0 +1,61 @@
+<?php  
+class Home extends CI_Controller{
+    function __construct(){
+        parent::__construct();
+        $this->load->helper('url');
+        $this->load->helper('asset');
+    
+    }
+    
+    public function index()
+    { 
+        $data['page_title'] = 'Al-Rehman Cattle & Breeder';
+        $this->load->view('main_header',$data);
+        $this->load->view('homepage');
+        $this->load->view('footer');
+    }
+    
+    public function about()
+    { 
+        $data['page_title'] = 'About Al-Rehman';
+        $this->load->view('main_header',$data);
+        $this->load->view('about');
+        $this->load->view('footer');
+    }
+    
+    public function contact()
+    { 
+        $data['feedback']=-1;
+        $data['page_title'] = 'Contact Us';
+        $this->load->view('main_header',$data);
+        $this->load->view('map');
+        $this->load->view('footer');
+    }
+      public function addContactData()
+    {
+        $name = $this->security->xss_clean($this->input->post('name'));
+        $email = $this->security->xss_clean($this->input->post('email'));
+        $phone = $this->security->xss_clean($this->input->post('phone'));
+        $address = $this->security->xss_clean($this->input->post('Address'));
+        $subject = $this->security->xss_clean($this->input->post('subject'));
+        $comment = $this->security->xss_clean($this->input->post('comment'));
+        
+        $this->load->model('contact_model');
+        $temp = $this->contact_model->insertContactData($name, $email, $phone, $address, $subject, $comment);
+        if($temp){
+            $data['feedback']=0;
+        }else{
+            $data['feedback']=1;
+        }
+        
+        $data['page_title'] = 'Contact Us';
+        $this->load->view('main_header',$data);
+        $this->load->view('contactUs');
+        $this->load->view('footer');
+    }
+    
+  
+    
+    
+}
+?>
